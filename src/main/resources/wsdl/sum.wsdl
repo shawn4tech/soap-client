@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<wsdl:definitions name="Sum" targetNamespace="http://shawn.one/services/sum" xmlns:tns="http://shawn.one/services/sum"
+  xmlns:types="http://shawn.one/types/sum" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://shawn.one/types/sum" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+      attributeFormDefault="unqualified" version="1.0">
+
+      <xsd:element name="operands">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="firstNum" type="xsd:float" />
+            <xsd:element name="secondNum" type="xsd:float" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="result">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="sum" type="xsd:float" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="SumRequest">
+    <wsdl:part name="operands" element="types:operands" />
+  </wsdl:message>
+
+  <wsdl:message name="SumResponse">
+    <wsdl:part name="result" element="types:result" />
+  </wsdl:message>
+
+  <wsdl:portType name="Sum_PortType">
+    <wsdl:operation name="add">
+      <wsdl:input message="tns:SumRequest" />
+      <wsdl:output message="tns:SumResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="Sum_SoapBinding" type="tns:Sum_PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="add">
+      <soap:operation soapAction="http://shawn.one/services/sum/add" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="Sum_Service">
+    <wsdl:documentation>Sum of Two Numbers</wsdl:documentation>
+    <wsdl:port name="Sum_Port" binding="tns:Sum_SoapBinding">
+      <soap:address location="http://localhost:8080/ws/sum" />
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>
